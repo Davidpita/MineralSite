@@ -1,0 +1,191 @@
+/* ===== GLOBAL STYLES ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --dark: #1c1c1e;
+  --body: #ffffff;
+  --bg: #f7f7f8;
+  --text: #333336;
+  --muted: #6b6b72;
+  --wine: #7a1e42;
+  --wine-dk: #550f2c;
+  --rose: #b85070;
+  --blush: #f5e8ec;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Outfit", sans-serif;
+  color: var(--text);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── BUTTONS ── */
+.btn-primary {
+  background: var(--wine);
+  color: #fff;
+  padding: 14px 36px;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: "Outfit", sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  transition: 0.25s;
+}
+
+.btn-primary:hover {
+  background: var(--wine-dk);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(122, 30, 66, 0.25);
+}
+
+.btn-outline {
+  background: transparent;
+  color: #fff;
+  padding: 14px 36px;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  transition: 0.25s;
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #fff;
+}
+
+/* ── SECTION COMMONS ── */
+section {
+  padding: 96px 0;
+}
+
+.badge {
+  display: inline-block;
+  color: var(--wine);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  margin-bottom: 10px;
+}
+
+.sec-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+
+.sec-desc {
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.85;
+}
+
+.sec-hdr {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.sec-hdr .sec-desc {
+  max-width: 660px;
+  margin: 0 auto;
+}
+
+.divider {
+  width: 44px;
+  height: 2px;
+  background: var(--wine);
+  border-radius: 2px;
+  margin: 12px 0 20px;
+}
+
+.center .divider {
+  margin: 12px auto 20px;
+}
+
+/* ── REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── SCROLL TOP ── */
+.scroll-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  background: var(--wine);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  box-shadow: 0 4px 16px rgba(122, 30, 66, 0.3);
+  transition: 0.25s;
+  z-index: 999;
+}
+
+.scroll-top:hover {
+  background: var(--wine-dk);
+  transform: translateY(-3px);
+}
+
+.scroll-top.show {
+  display: flex;
+}
+
+/* Animações globais */
+@keyframes zoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

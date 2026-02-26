@@ -1,0 +1,1071 @@
+/* ===== PÁGINA MINERAL ===== */
+
+/* Banner da página */
+.mineral-banner {
+  position: relative;
+  background: var(--dark);
+  padding: 120px 0 60px;
+  overflow: hidden;
+}
+
+.mineral-banner-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1600&q=80');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.2;
+}
+
+.mineral-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--dark) 0%, rgba(28, 28, 30, 0.8) 100%);
+}
+
+.mineral-banner-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.mineral-banner-content h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.mineral-banner-content h1 span {
+  color: var(--rose);
+}
+
+.mineral-banner-content p {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+/* Seção Mineral */
+.mineral-sec {
+  background: var(--dark);
+  padding: 100px 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.mineral-sec::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.015) 0px,
+    rgba(255, 255, 255, 0.015) 1px,
+    transparent 1px,
+    transparent 28px
+  );
+}
+
+.mineral-sec::after {
+  content: "";
+  position: absolute;
+  top: -120px;
+  right: -120px;
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(
+    circle,
+    rgba(122, 30, 66, 0.25) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.mineral-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.mineral-hdr {
+  text-align: center;
+  margin-bottom: 70px;
+}
+
+.mineral-hdr .badge {
+  color: #c8879a;
+}
+
+.mineral-hdr .sec-title {
+  color: #fff;
+  font-size: 48px;
+}
+
+.mineral-hdr .divider {
+  background: var(--rose);
+  margin: 12px auto 20px;
+}
+
+.mineral-hdr .sec-desc {
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* Card Destaque */
+.mineral-feature {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: stretch;
+  margin-bottom: 60px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.3s ease;
+}
+
+.mineral-feature.destaque-ativo {
+  box-shadow: 0 0 0 4px var(--rose), 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.mineral-feature-img {
+  position: relative;
+  min-height: 400px;
+  overflow: hidden;
+}
+
+.mineral-feature-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.7s;
+}
+
+.mineral-feature:hover .mineral-feature-img img {
+  transform: scale(1.04);
+}
+
+.mineral-feature-img::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(122, 30, 66, 0.35),
+    rgba(28, 28, 30, 0.2)
+  );
+}
+
+.mineral-feature-txt {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-left: none;
+  padding: 56px 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mineral-feature-txt .badge {
+  color: #c8879a;
+  font-size: 14px;
+}
+
+.mineral-feature-txt .divider {
+  background: var(--rose);
+}
+
+.mineral-feature-txt h3 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+
+.mineral-feature-txt p {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 15px;
+  line-height: 1.9;
+  margin-bottom: 20px;
+}
+
+.mineral-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.mineral-tag {
+  background: rgba(122, 30, 66, 0.3);
+  border: 1px solid rgba(184, 80, 112, 0.35);
+  color: #d4929e;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 50px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.mineral-tag:hover {
+  background: rgba(122, 30, 66, 0.5);
+  border-color: var(--rose);
+}
+
+/* Cards Pequenos */
+.mineral-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 60px;
+}
+
+.mineral-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 32px 24px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.mineral-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--wine), var(--rose));
+  transform: scaleX(0);
+  transition: transform 0.3s;
+  transform-origin: left;
+}
+
+.mineral-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  transform: translateY(-5px);
+  border-color: rgba(184, 80, 112, 0.25);
+}
+
+.mineral-card:hover::before {
+  transform: scaleX(1);
+}
+
+.mineral-card:active {
+  transform: scale(0.98);
+}
+
+.mineral-card.loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.mineral-card-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(122, 30, 66, 0.35);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  transition: background 0.3s ease;
+}
+
+.mineral-card:hover .mineral-card-icon {
+  background: rgba(122, 30, 66, 0.5);
+}
+
+.mineral-card-icon i {
+  font-size: 20px;
+  color: #c8879a;
+}
+
+.mineral-card h4 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.mineral-card p {
+ 
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+
+.mineral-card-footer {
+  margin-top: 16px;
+  color: var(--rose);
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.mineral-card:hover .mineral-card-footer {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Cards em Grid (secundários) */
+.mineral-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 60px;
+}
+
+.mineral-grid-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.mineral-grid-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
+  border-color: rgba(184, 80, 112, 0.25);
+}
+
+.mineral-grid-img {
+  height: 220px;
+  overflow: hidden;
+  position: relative;
+}
+
+.mineral-grid-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.mineral-grid-card:hover .mineral-grid-img img {
+  transform: scale(1.06);
+}
+
+.mineral-grid-img::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent, rgba(28, 28, 30, 0.8));
+}
+
+.mineral-grid-body {
+  padding: 24px;
+}
+
+.mineral-grid-body h3 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.mineral-grid-body p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+.mineral-grid-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mineral-grid-tag {
+  font-size: 11px;
+  color: var(--rose);
+  background: rgba(184, 80, 112, 0.1);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+/* Loading State */
+.mineral-loading {
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Scroll Animation */
+@keyframes destaquePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(184, 80, 112, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(184, 80, 112, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(184, 80, 112, 0);
+  }
+}
+
+.destaque-pulse {
+  animation: destaquePulse 1s ease;
+}
+
+/* ===== RESPONSIVIDADE PROFISSIONAL ===== */
+
+/* Telas grandes (1400px - 1600px) */
+@media (min-width: 1400px) {
+  .mineral-inner {
+    max-width: 1320px;
+  }
+  
+  .mineral-feature-txt {
+    padding: 64px 60px;
+  }
+  
+  .mineral-feature-txt h3 {
+    font-size: 36px;
+  }
+  
+  .mineral-cards {
+    gap: 24px;
+  }
+}
+
+/* Telas grandes (1200px - 1399px) */
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .mineral-cards {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  
+  .mineral-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  
+  .mineral-card {
+    padding: 28px 20px;
+  }
+  
+  .mineral-card h4 {
+    font-size: 18px;
+  }
+  
+  .mineral-card p {
+    font-size: 13px;
+  }
+}
+
+/* Desktops médios (992px - 1199px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .mineral-banner-content h1 {
+    font-size: 56px;
+  }
+  
+  .mineral-banner-content p {
+    font-size: 19px;
+  }
+  
+  .mineral-hdr .sec-title {
+    font-size: 42px;
+  }
+  
+  .mineral-cards {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  
+  .mineral-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+  }
+  
+  .mineral-feature-txt {
+    padding: 48px 40px;
+  }
+  
+  .mineral-feature-txt h3 {
+    font-size: 30px;
+  }
+  
+  .mineral-card {
+    padding: 28px 20px;
+  }
+  
+  .mineral-card h4 {
+    font-size: 18px;
+  }
+  
+  .mineral-card p {
+    font-size: 13px;
+  }
+}
+
+/* Tablets paisagem (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .mineral-banner {
+    padding: 100px 0 50px;
+  }
+  
+  .mineral-banner-content h1 {
+    font-size: 48px;
+  }
+  
+  .mineral-banner-content p {
+    font-size: 18px;
+    max-width: 600px;
+  }
+  
+  .mineral-hdr {
+    margin-bottom: 50px;
+  }
+  
+  .mineral-hdr .sec-title {
+    font-size: 38px;
+  }
+  
+  .mineral-hdr .sec-desc {
+    font-size: 15px;
+    max-width: 500px;
+  }
+  
+  .mineral-feature {
+    grid-template-columns: 1fr;
+    margin-bottom: 50px;
+  }
+  
+  .mineral-feature-img {
+    min-height: 350px;
+  }
+  
+  .mineral-feature-txt {
+    padding: 48px 40px;
+    border-left: 1px solid rgba(255, 255, 255, 0.07);
+    border-top: none;
+  }
+  
+  .mineral-feature-txt h3 {
+    font-size: 28px;
+  }
+  
+  .mineral-feature-txt p {
+    font-size: 14px;
+  }
+  
+  .mineral-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 50px;
+  }
+  
+  .mineral-card {
+    padding: 28px 22px;
+  }
+  
+  .mineral-card h4 {
+    font-size: 18px;
+  }
+  
+  .mineral-card p {
+    font-size: 13px;
+  }
+  
+  .mineral-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 50px;
+  }
+  
+  .mineral-grid-img {
+    height: 200px;
+  }
+  
+  .mineral-grid-body h3 {
+    font-size: 20px;
+  }
+  
+  .mineral-grid-body p {
+    font-size: 13px;
+  }
+  
+  .mineral-tag {
+    font-size: 11px;
+    padding: 4px 12px;
+  }
+}
+
+/* Tablets retrato (576px - 767px) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .mineral-banner {
+    padding: 80px 0 40px;
+  }
+  
+  .mineral-banner-content h1 {
+    font-size: 42px;
+  }
+  
+  .mineral-banner-content p {
+    font-size: 17px;
+    padding: 0 20px;
+  }
+  
+  .mineral-hdr {
+    margin-bottom: 40px;
+  }
+  
+  .mineral-hdr .sec-title {
+    font-size: 34px;
+  }
+  
+  .mineral-hdr .sec-desc {
+    font-size: 14px;
+    padding: 0 15px;
+  }
+  
+  .mineral-feature {
+    grid-template-columns: 1fr;
+    margin-bottom: 40px;
+    border-radius: 12px;
+  }
+  
+  .mineral-feature-img {
+    min-height: 300px;
+  }
+  
+  .mineral-feature-txt {
+    padding: 40px 30px;
+  }
+  
+  .mineral-feature-txt h3 {
+    font-size: 26px;
+  }
+  
+  .mineral-feature-txt p {
+    font-size: 14px;
+    margin-bottom: 18px;
+  }
+  
+  .mineral-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+  
+  .mineral-card {
+    padding: 24px 18px;
+  }
+  
+  .mineral-card-icon {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 14px;
+  }
+  
+  .mineral-card-icon i {
+    font-size: 18px;
+  }
+  
+  .mineral-card h4 {
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+  
+  .mineral-card p {
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+  
+  .mineral-card-footer {
+    font-size: 12px;
+    margin-top: 12px;
+  }
+  
+  .mineral-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-top: 40px;
+  }
+  
+  .mineral-grid-img {
+    height: 200px;
+  }
+  
+  .mineral-grid-body {
+    padding: 20px;
+  }
+  
+  .mineral-grid-body h3 {
+    font-size: 20px;
+  }
+  
+  .mineral-grid-body p {
+    font-size: 13px;
+  }
+  
+  .mineral-tags {
+    gap: 6px;
+  }
+  
+  .mineral-tag {
+    font-size: 10px;
+    padding: 4px 10px;
+  }
+}
+
+/* Celulares (menos de 576px) */
+@media (max-width: 575px) {
+  .mineral-banner {
+    padding: 70px 0 30px;
+  }
+  
+  .mineral-banner-content h1 {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+  
+  .mineral-banner-content h1 span {
+    display: inline-block;
+  }
+  
+  .mineral-banner-content p {
+    font-size: 15px;
+    padding: 0 15px;
+    line-height: 1.6;
+  }
+  
+  .mineral-inner {
+    padding: 0 16px;
+  }
+  
+  .mineral-hdr {
+    margin-bottom: 35px;
+  }
+  
+  .mineral-hdr .badge {
+    font-size: 11px;
+  }
+  
+  .mineral-hdr .sec-title {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+  
+  .mineral-hdr .sec-desc {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  
+  .mineral-hdr .divider {
+    margin: 10px auto 16px;
+  }
+  
+  .mineral-feature {
+    grid-template-columns: 1fr;
+    margin-bottom: 35px;
+    border-radius: 10px;
+  }
+  
+  .mineral-feature-img {
+    min-height: 250px;
+  }
+  
+  .mineral-feature-txt {
+    padding: 30px 24px;
+  }
+  
+  .mineral-feature-txt .badge {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+  
+  .mineral-feature-txt h3 {
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+  
+  .mineral-feature-txt p {
+    font-size: 13px;
+    margin-bottom: 16px;
+    line-height: 1.7;
+  }
+  
+  .mineral-cards {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 35px;
+  }
+  
+  .mineral-card {
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mineral-card-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+  }
+  
+  .mineral-card-icon i {
+    font-size: 20px;
+  }
+  
+  .mineral-card h4 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  
+  .mineral-card p {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  
+  .mineral-card-footer {
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  
+  .mineral-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 35px;
+  }
+  
+  .mineral-grid-img {
+    height: 180px;
+  }
+  
+  .mineral-grid-body {
+    padding: 18px;
+  }
+  
+  .mineral-grid-body h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  
+  .mineral-grid-body p {
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  
+  .mineral-grid-tags {
+    gap: 4px;
+  }
+  
+  .mineral-grid-tag {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+  
+  .mineral-tags {
+    gap: 4px;
+  }
+  
+  .mineral-tag {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+}
+
+/* Celulares pequenos (menos de 380px) */
+@media (max-width: 380px) {
+  .mineral-banner-content h1 {
+    font-size: 28px;
+  }
+  
+  .mineral-banner-content p {
+    font-size: 14px;
+  }
+  
+  .mineral-hdr .sec-title {
+    font-size: 24px;
+  }
+  
+  .mineral-feature-txt {
+    padding: 24px 20px;
+  }
+  
+  .mineral-feature-txt h3 {
+    font-size: 20px;
+  }
+  
+  .mineral-feature-txt p {
+    font-size: 12.5px;
+  }
+  
+  .mineral-card {
+    padding: 20px 16px;
+  }
+  
+  .mineral-card h4 {
+    font-size: 17px;
+  }
+  
+  .mineral-card p {
+    font-size: 12px;
+  }
+  
+  .mineral-grid-img {
+    height: 160px;
+  }
+  
+  .mineral-grid-body {
+    padding: 16px;
+  }
+  
+  .mineral-grid-body h3 {
+    font-size: 17px;
+  }
+}
+
+/* Ajustes para orientação landscape em celulares */
+@media (max-height: 500px) and (orientation: landscape) {
+  .mineral-banner {
+    padding: 50px 0 25px;
+  }
+  
+  .mineral-banner-content h1 {
+    font-size: 36px;
+    margin-bottom: 8px;
+  }
+  
+  .mineral-banner-content p {
+    font-size: 15px;
+  }
+  
+  .mineral-feature-img {
+    min-height: 300px;
+  }
+  
+  .mineral-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Ajustes para telas muito grandes (4K) */
+@media (min-width: 2000px) {
+  .mineral-inner {
+    max-width: 1600px;
+  }
+  
+  .mineral-banner-content h1 {
+    font-size: 80px;
+  }
+  
+  .mineral-banner-content p {
+    font-size: 24px;
+    max-width: 1000px;
+  }
+  
+  .mineral-hdr .sec-title {
+    font-size: 56px;
+  }
+  
+  .mineral-feature-txt h3 {
+    font-size: 42px;
+  }
+  
+  .mineral-feature-txt p {
+    font-size: 18px;
+  }
+  
+  .mineral-card {
+    padding: 40px 32px;
+  }
+  
+  .mineral-card h4 {
+    font-size: 24px;
+  }
+  
+  .mineral-card p {
+    font-size: 16px;
+  }
+}
+
+/* Ajustes para telas retina e alta densidade */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .mineral-feature-img img,
+  .mineral-grid-img img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Melhorias de toque para dispositivos móveis */
+@media (hover: none) and (pointer: coarse) {
+  .mineral-card,
+  .mineral-grid-card {
+    -webkit-tap-highlight-color: rgba(122, 30, 66, 0.3);
+  }
+  
+  .mineral-card:hover {
+    transform: none;
+    background: rgba(255, 255, 255, 0.04);
+  }
+  
+  .mineral-card:active {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.07);
+  }
+  
+  .mineral-grid-card:hover {
+    transform: none;
+  }
+  
+  .mineral-grid-card:active {
+    transform: translateY(-4px);
+  }
+  
+  .mineral-tag:hover {
+    background: rgba(122, 30, 66, 0.3);
+  }
+  
+  .mineral-tag:active {
+    background: rgba(122, 30, 66, 0.5);
+  }
+}
+
+/* Animações em cascata para os cards */
+.mineral-card {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.mineral-grid-card {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.mineral-card:nth-child(1) { animation-delay: 0.05s; }
+.mineral-card:nth-child(2) { animation-delay: 0.1s; }
+.mineral-card:nth-child(3) { animation-delay: 0.15s; }
+.mineral-card:nth-child(4) { animation-delay: 0.2s; }
+.mineral-card:nth-child(5) { animation-delay: 0.25s; }
+.mineral-card:nth-child(6) { animation-delay: 0.3s; }
+
+.mineral-grid-card:nth-child(1) { animation-delay: 0.1s; }
+.mineral-grid-card:nth-child(2) { animation-delay: 0.15s; }
+.mineral-grid-card:nth-child(3) { animation-delay: 0.2s; }

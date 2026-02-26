@@ -1,0 +1,290 @@
+
+/* ===== PÁGINA DE SOLICITAÇÃO ===== */
+.solicitacao-container {
+  background: #f5f5f5;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.solicitacao-card {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+.solicitacao-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  background: #7a1e42;
+  padding: 15px 20px;
+  border-radius: 8px;
+}
+
+.solicitacao-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  background: white;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.solicitacao-header h1 {
+  color: white;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
+  text-align: center;
+}
+
+.solicitacao-section {
+  margin-bottom: 30px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.solicitacao-section h2 {
+  background: #7a1e42;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 10px 15px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.solicitacao-data {
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.solicitacao-data label {
+  font-weight: 600;
+  min-width: 60px;
+}
+
+.data-inputs {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.data-inputs input {
+  width: 50px;
+  border: none;
+  border-bottom: 1px solid #000;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 3px 0;
+}
+
+.data-inputs input:focus {
+  outline: none;
+  border-bottom-color: #7a1e42;
+}
+
+.solicitacao-campos {
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.campo label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+}
+
+.campo input {
+  border: none;
+  border-bottom: 1px solid #000;
+  padding: 5px 0;
+  font-size: 14px;
+  background: transparent;
+}
+
+.campo input:focus {
+  outline: none;
+  border-bottom-color: #7a1e42;
+}
+
+.campo.outros {
+  grid-column: 1 / -1;
+  margin-top: 10px;
+  padding: 15px;
+  border-top: 1px solid #eee;
+}
+
+.servicos-grid {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px 20px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.servico-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.servico-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.servico-checkbox label {
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.solicitacao-assinaturas {
+  margin-top: 30px;
+  padding: 20px;
+  border-top: 2px dashed #ccc;
+}
+
+.data-local {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-bottom: 30px;
+}
+
+.data-local input {
+  width: 40px;
+  border: none;
+  border-bottom: 1px solid #000;
+  text-align: center;
+  padding: 3px 0;
+}
+
+.data-local input:last-child {
+  width: 60px;
+}
+
+.assinaturas {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.assinatura {
+  flex: 1;
+  text-align: center;
+}
+
+.linha {
+  border-top: 1px solid #000;
+  margin-bottom: 5px;
+  width: 100%;
+}
+
+.assinatura span {
+  font-size: 12px;
+  color: #666;
+}
+
+.solicitacao-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.btn-voltar {
+  background: transparent;
+  border: 2px solid #7a1e42;
+  color: #7a1e42;
+  padding: 12px 30px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-voltar:hover {
+  background: #7a1e42;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-download {
+  background: #7a1e42;
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-download:hover {
+  background: #550f2c;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(122, 30, 66, 0.3);
+}
+
+@media (max-width: 768px) {
+  .solicitacao-card {
+    padding: 15px;
+  }
+  
+  .servicos-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .solicitacao-campos {
+    grid-template-columns: 1fr;
+  }
+  
+  .assinaturas {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .solicitacao-actions {
+    flex-direction: column;
+  }
+  
+  .btn-voltar, .btn-download {
+    width: 100%;
+    justify-content: center;
+  }
+}
