@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import TopBar from '../components/TopBar';
 import Navbar from '../components/Navbar';
@@ -11,6 +11,30 @@ const SolicitacaoServico = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { servicoTitulo } = location.state || {};
+
+  // Função para carregar imagem como base64
+  const carregarImagemComoBase64 = (url) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = 'Anonymous';
+      img.src = url;
+      
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        const dataURL = canvas.toDataURL('image/png');
+        resolve(dataURL);
+      };
+      
+      img.onerror = (error) => {
+        console.error('Erro ao carregar imagem:', error);
+        reject(error);
+      };
+    });
+  };
 
   // Lista completa de serviços
   const todosServicos = [
@@ -44,6 +68,15 @@ const SolicitacaoServico = () => {
     'Assessoria de Venda e Compra de Mina'
   ];
 
+  // Dados fixos do responsável (equipe da Mineral & Mineração)
+  const DADOS_RESPONSAVEL_FIXO = {
+    nome: 'Zilda Gomes',
+    cargo: 'Administradora',
+    email: 'contatomineralemineracao@gmail.com',
+    telefone: '(71) 99254-3427',
+    empresa: 'Mineral & Mineração'
+  };
+
   // Estado do formulário
   const [formData, setFormData] = useState({
     data: {
@@ -51,13 +84,7 @@ const SolicitacaoServico = () => {
       month: (new Date().getMonth() + 1).toString().padStart(2, '0'),
       year: new Date().getFullYear().toString()
     },
-    responsavel: {
-      nome: '',
-      cargo: '',
-      email: '',
-      telefone: '',
-      empresa: ''
-    },
+    responsavel: DADOS_RESPONSAVEL_FIXO,
     solicitante: {
       nome: '',
       cpf_cnpj: '',
@@ -80,22 +107,14 @@ const SolicitacaoServico = () => {
     month: ''
   });
 
+  const [enviando, setEnviando] = useState(false);
+
   // Atualizar data
   const handleDataChange = (field, value) => {
-    // Permitir apenas números
     if (!/^\d*$/.test(value)) return;
-    
     setFormData(prev => ({
       ...prev,
       data: { ...prev.data, [field]: value }
-    }));
-  };
-
-  // Atualizar responsável
-  const handleResponsavelChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      responsavel: { ...prev.responsavel, [field]: value }
     }));
   };
 
@@ -115,7 +134,20 @@ const SolicitacaoServico = () => {
     }));
   };
 
-  // Validar formulário antes de gerar PDF
+  // Obter lista de serviços selecionados
+  const getServicosSelecionados = () => {
+    const selecionados = Object.entries(formData.servicos)
+      .filter(([_, selecionado]) => selecionado)
+      .map(([servico]) => servico);
+    
+    if (formData.outros) {
+      selecionados.push(`Outros: ${formData.outros}`);
+    }
+    
+    return selecionados;
+  };
+
+  // Validar formulário
   const validarFormulario = () => {
     if (!formData.responsavel.nome || !formData.solicitante.nome) {
       alert('Por favor, preencha o nome do responsável e do solicitante');
@@ -131,166 +163,358 @@ const SolicitacaoServico = () => {
     return true;
   };
 
-  // Gerar PDF
-  const gerarPDF = () => {
+  // =====================================================
+  // FUNÇÃO gerarPDF v3 — Logo proporcional + Header refinado
+  // =====================================================
+  const gerarPDF = async () => {
     if (!validarFormulario()) return;
     
-    const doc = new jsPDF();
+    setEnviando(true);
     
-    // Configurações iniciais
-    doc.setFont('helvetica', 'normal');
-    
-    // Logo e título
-    doc.setFillColor(122, 30, 66);
-    doc.rect(10, 10, 190, 12, 'F');
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(16);
-    doc.setFont('helvetica', 'bold');
-    doc.text('FICHA DE SOLICITAÇÃO', 105, 18, { align: 'center' });
-    
-    // Data
-    doc.setTextColor(0, 0, 0);
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'bold');
-    doc.text('DATA:', 10, 30);
-    doc.setFont('helvetica', 'normal');
-    doc.text(`${formData.data.day}/${formData.data.month}/${formData.data.year}`, 40, 30);
-    
-    // Dados do Responsável
-    let yPos = 40;
-    
-    // Título Responsável
-    doc.setFillColor(122, 30, 66);
-    doc.rect(10, yPos, 190, 8, 'F');
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(11);
-    doc.setFont('helvetica', 'bold');
-    doc.text('DADOS DO RESPONSÁVEL / SERVIÇOS', 14, yPos + 5.5);
-    yPos += 12;
-    
-    // Campos do Responsável
-    doc.setTextColor(0, 0, 0);
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'bold');
-    
-    const responsavelCampos = [
-      { label: 'Nome:', value: formData.responsavel.nome },
-      { label: 'Cargo:', value: formData.responsavel.cargo },
-      { label: 'Email:', value: formData.responsavel.email },
-      { label: 'Telefone:', value: formData.responsavel.telefone },
-      { label: 'Empresa:', value: formData.responsavel.empresa }
-    ];
-    
-    responsavelCampos.forEach(campo => {
-      doc.text(campo.label, 14, yPos);
+    try {
+      const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      const PAGE_W = 210;
+      const PAGE_H = 297;
+      const MARGIN = 14;
+      const CONTENT_W = PAGE_W - MARGIN * 2;
+
+      const C = {
+        vinho:       [122, 30, 66],
+        vinhoEscuro: [90, 18, 46],
+        rosa:        [184, 80, 112],
+        rosaClaro:   [240, 210, 220],
+        dourado:     [196, 155, 80],
+        branco:      [255, 255, 255],
+        cinzaEscuro: [40, 40, 44],
+        cinzaMedio:  [100, 95, 100],
+        cinzaClaro:  [225, 220, 225],
+        fundoSec:    [252, 248, 250],
+      };
+
+      const setFill  = (rgb) => doc.setFillColor(...rgb);
+      const setDraw  = (rgb) => doc.setDrawColor(...rgb);
+      const setColor = (rgb) => doc.setTextColor(...rgb);
+
+      const roundedRect = (x, y, w, h, fillColor, strokeColor = null, lw = 0.3) => {
+        setFill(fillColor);
+        doc.rect(x, y, w, h, strokeColor ? 'FD' : 'F');
+        if (strokeColor) {
+          setDraw(strokeColor);
+          doc.setLineWidth(lw);
+          doc.rect(x, y, w, h, 'S');
+        }
+      };
+
+      const hr = (y, x1, x2, color, lw = 0.4) => {
+        setDraw(color);
+        doc.setLineWidth(lw);
+        doc.line(x1, y, x2, y);
+      };
+
+      const drawField = (label, value, x, y, labelW = 48) => {
+        doc.setFont('times', 'italic');
+        doc.setFontSize(8.5);
+        setColor(C.cinzaMedio);
+        doc.text(label, x, y);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9.5);
+        setColor(C.cinzaEscuro);
+        doc.text(value || '—', x + labelW, y);
+      };
+
+      // =============================================
+      // CABEÇALHO — compacto e limpo
+      // =============================================
+      const HEADER_H = 24;
+
+      setFill(C.vinhoEscuro);
+      doc.rect(0, 0, PAGE_W, HEADER_H, 'F');
+
+      setFill(C.dourado);
+      doc.rect(0, HEADER_H - 0.8, PAGE_W, 0.8, 'F');
+
+      // ===== LOGOTIPO — 16x16mm, discreto =====
+      const LOGO_SIZE = 16;
+      const LOGO_X = 6;
+      const LOGO_Y = (HEADER_H - LOGO_SIZE) / 2;
+
+      try {
+        const logoBase64 = await carregarImagemComoBase64('/img/Captura de tela 2026-02-12 222040.png');
+        doc.addImage(logoBase64, 'PNG', LOGO_X, LOGO_Y, LOGO_SIZE, LOGO_SIZE);
+      } catch {
+        setFill(C.rosa);
+        doc.rect(LOGO_X, LOGO_Y, LOGO_SIZE, LOGO_SIZE, 'F');
+        setColor(C.branco);
+        doc.setFont('times', 'bold');
+        doc.setFontSize(9);
+        doc.text('M&M', LOGO_X + LOGO_SIZE / 2, LOGO_Y + LOGO_SIZE / 2 + 2, { align: 'center' });
+      }
+
+      // Linha vertical separadora
+      setDraw([155, 75, 108]);
+      doc.setLineWidth(0.3);
+      doc.line(LOGO_X + LOGO_SIZE + 5, 5, LOGO_X + LOGO_SIZE + 5, HEADER_H - 5);
+
+      // ===== TEXTO DO HEADER =====
+      const TEXT_X = LOGO_X + LOGO_SIZE + 10;
+
+      setColor(C.branco);
+      doc.setFont('times', 'bold');
+      doc.setFontSize(14);
+      doc.text('MINERAL & MINERAÇÃO', TEXT_X, 10.5);
+
+      setColor([210, 185, 200]);
       doc.setFont('helvetica', 'normal');
-      doc.text(campo.value || '-', 50, yPos);
-      doc.setFont('helvetica', 'bold');
-      yPos += 7;
-    });
-    
-    yPos += 5;
-    
-    // Dados do Solicitante
-    doc.setFillColor(122, 30, 66);
-    doc.rect(10, yPos, 190, 8, 'F');
-    doc.setTextColor(255, 255, 255);
-    doc.setFont('helvetica', 'bold');
-    doc.text('DADOS DO SOLICITANTE / EMPRESA', 14, yPos + 5.5);
-    yPos += 12;
-    
-    // Campos do Solicitante
-    doc.setTextColor(0, 0, 0);
-    doc.setFont('helvetica', 'bold');
-    
-    const solicitanteCampos = [
-      { label: 'Nome:', value: formData.solicitante.nome },
-      { label: 'CPF/CNPJ:', value: formData.solicitante.cpf_cnpj },
-      { label: 'Email:', value: formData.solicitante.email },
-      { label: 'Pessoa Contato:', value: formData.solicitante.pessoa_contato },
-      { label: 'Endereço:', value: formData.solicitante.endereco },
-      { label: 'Telefone:', value: formData.solicitante.telefone },
-      { label: 'Cidade/Estado:', value: formData.solicitante.cidade_estado }
-    ];
-    
-    solicitanteCampos.forEach(campo => {
-      doc.text(campo.label, 14, yPos);
+      doc.setFontSize(7.5);
+      doc.text('Consultoria Especializada em Mineração e Meio Ambiente', TEXT_X, 16);
+
+      setColor([175, 150, 165]);
+      doc.setFont('times', 'italic');
+      doc.setFontSize(7);
+      doc.text('contatomineralemineracao@gmail.com  |  (71) 99254-3427', TEXT_X, 21);
+
+      // =============================================
+      // FAIXA TÍTULO
+      // =============================================
+      setFill(C.rosa);
+      doc.rect(0, HEADER_H + 0.8, PAGE_W, 10, 'F');
+
+      setColor(C.branco);
+      doc.setFont('times', 'bold');
+      doc.setFontSize(12);
+      doc.text('FICHA DE SOLICITAÇÃO DE SERVIÇOS', PAGE_W / 2, HEADER_H + 7.5, { align: 'center' });
+
+      // Badge data
+      const dataStr = `${formData.data.day}/${formData.data.month}/${formData.data.year}`;
+      setFill(C.dourado);
+      doc.rect(PAGE_W - MARGIN - 34, HEADER_H + 1.8, 34, 8, 'F');
+      setColor(C.branco);
+      doc.setFont('times', 'bold');
+      doc.setFontSize(7);
+      doc.text('DATA:', PAGE_W - MARGIN - 31, HEADER_H + 7);
       doc.setFont('helvetica', 'normal');
-      doc.text(campo.value || '-', 60, yPos);
-      doc.setFont('helvetica', 'bold');
-      yPos += 7;
-    });
-    
-    yPos += 5;
-    
-    // Serviços
-    doc.setFillColor(122, 30, 66);
-    doc.rect(10, yPos, 190, 8, 'F');
-    doc.setTextColor(255, 255, 255);
-    doc.text('SERVIÇOS', 14, yPos + 5.5);
-    yPos += 12;
-    
-    // Lista de serviços em 3 colunas
-    doc.setTextColor(0, 0, 0);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
-    
-    const servicosSelecionados = Object.entries(formData.servicos)
-      .filter(([_, selecionado]) => selecionado)
-      .map(([servico]) => servico);
-    
-    // Dividir em 3 colunas
-    const col1 = servicosSelecionados.filter((_, i) => i % 3 === 0);
-    const col2 = servicosSelecionados.filter((_, i) => i % 3 === 1);
-    const col3 = servicosSelecionados.filter((_, i) => i % 3 === 2);
-    
-    const maxLinhas = Math.max(col1.length, col2.length, col3.length);
-    
-    for (let i = 0; i < maxLinhas; i++) {
-      if (i < col1.length) {
-        doc.text(`• ${col1[i]}`, 14, yPos + (i * 5));
+      doc.setFontSize(7.5);
+      doc.text(dataStr, PAGE_W - MARGIN - 18, HEADER_H + 7);
+
+      // =============================================
+      // SEÇÃO 1 — DADOS DO RESPONSÁVEL
+      // =============================================
+      let y = HEADER_H + 18;
+
+      setFill(C.vinho);
+      doc.rect(MARGIN, y, CONTENT_W, 9, 'F');
+      setFill(C.dourado);
+      doc.rect(MARGIN, y, 3.5, 9, 'F');
+      setColor(C.branco);
+      doc.setFont('times', 'bold');
+      doc.setFontSize(10.5);
+      doc.text('1.  DADOS DO RESPONSÁVEL TÉCNICO', MARGIN + 8, y + 6);
+      y += 11;
+
+      roundedRect(MARGIN, y, CONTENT_W, 51, C.fundoSec, C.cinzaClaro);
+      y += 6;
+
+      const respCampos = [
+        { label: 'Nome Completo:',  value: formData.responsavel.nome },
+        { label: 'Cargo / Função:', value: formData.responsavel.cargo },
+        { label: 'E-mail:',         value: formData.responsavel.email },
+        { label: 'Telefone:',       value: formData.responsavel.telefone },
+        { label: 'Empresa:',        value: formData.responsavel.empresa },
+      ];
+
+      respCampos.forEach((campo, i) => {
+        if (i > 0) hr(y - 3.5, MARGIN + 5, PAGE_W - MARGIN - 5, C.cinzaClaro, 0.2);
+        drawField(campo.label, campo.value, MARGIN + 7, y);
+        y += 10;
+      });
+      y += 5;
+
+      // =============================================
+      // SEÇÃO 2 — DADOS DO SOLICITANTE
+      // =============================================
+      setFill(C.vinho);
+      doc.rect(MARGIN, y, CONTENT_W, 9, 'F');
+      setFill(C.rosa);
+      doc.rect(MARGIN, y, 3.5, 9, 'F');
+      setColor(C.branco);
+      doc.setFont('times', 'bold');
+      doc.setFontSize(10.5);
+      doc.text('2.  DADOS DO SOLICITANTE / EMPRESA', MARGIN + 8, y + 6);
+      y += 11;
+
+      roundedRect(MARGIN, y, CONTENT_W, 75, C.fundoSec, C.cinzaClaro);
+      y += 6;
+
+      const solCampos = [
+        { label: 'Nome / Razão Social:',  value: formData.solicitante.nome },
+        { label: 'CPF / CNPJ:',          value: formData.solicitante.cpf_cnpj },
+        { label: 'E-mail:',               value: formData.solicitante.email },
+        { label: 'Pessoa p/ Contato:',    value: formData.solicitante.pessoa_contato },
+        { label: 'Endereço Completo:',    value: formData.solicitante.endereco },
+        { label: 'Telefone:',             value: formData.solicitante.telefone },
+        { label: 'Cidade / UF:',          value: formData.solicitante.cidade_estado },
+      ];
+
+      solCampos.forEach((campo, i) => {
+        if (i > 0) hr(y - 3.5, MARGIN + 5, PAGE_W - MARGIN - 5, C.cinzaClaro, 0.2);
+        drawField(campo.label, campo.value, MARGIN + 7, y);
+        y += 10;
+      });
+      y += 5;
+
+      // =============================================
+      // SEÇÃO 3 — SERVIÇOS SOLICITADOS
+      // =============================================
+      setFill(C.vinho);
+      doc.rect(MARGIN, y, CONTENT_W, 9, 'F');
+      setFill(C.dourado);
+      doc.rect(MARGIN, y, 3.5, 9, 'F');
+      setColor(C.branco);
+      doc.setFont('times', 'bold');
+      doc.setFontSize(10.5);
+      doc.text('3.  SERVIÇOS SOLICITADOS', MARGIN + 8, y + 6);
+      y += 11;
+
+      const servicosSelecionados = getServicosSelecionados();
+
+      if (servicosSelecionados.length === 0) {
+        roundedRect(MARGIN, y, CONTENT_W, 14, C.fundoSec, C.cinzaClaro);
+        setColor(C.cinzaMedio);
+        doc.setFont('times', 'italic');
+        doc.setFontSize(9);
+        doc.text('Nenhum serviço selecionado.', MARGIN + 7, y + 9);
+        y += 16;
+      } else {
+        const colW = CONTENT_W / 2 - 2;
+        const metade = Math.ceil(servicosSelecionados.length / 2);
+        const col1 = servicosSelecionados.slice(0, metade);
+        const col2 = servicosSelecionados.slice(metade);
+        const alturaServicos = metade * 7 + 12;
+
+        roundedRect(MARGIN, y, CONTENT_W, alturaServicos, C.fundoSec, C.cinzaClaro);
+
+        col1.forEach((srv, i) => {
+          setFill(C.rosa);
+          doc.circle(MARGIN + 8.5, y + 6 + i * 7 - 1.5, 1.3, 'F');
+          setColor(C.cinzaEscuro);
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(8.8);
+          doc.text(srv, MARGIN + 12, y + 6 + i * 7);
+        });
+
+        col2.forEach((srv, i) => {
+          setFill(C.rosa);
+          doc.circle(MARGIN + 2 + colW + 8.5, y + 6 + i * 7 - 1.5, 1.3, 'F');
+          setColor(C.cinzaEscuro);
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(8.8);
+          doc.text(srv, MARGIN + 2 + colW + 12, y + 6 + i * 7);
+        });
+
+        y += alturaServicos + 4;
       }
-      if (i < col2.length) {
-        doc.text(`• ${col2[i]}`, 80, yPos + (i * 5));
+
+      if (formData.outros) {
+        roundedRect(MARGIN, y, CONTENT_W, 13, [255, 250, 238], [196, 155, 80], 0.5);
+        doc.setFont('times', 'bolditalic');
+        doc.setFontSize(9);
+        setColor(C.dourado);
+        doc.text('Outros:', MARGIN + 7, y + 8.5);
+        doc.setFont('helvetica', 'normal');
+        setColor(C.cinzaEscuro);
+        doc.setFontSize(9);
+        doc.text(formData.outros, MARGIN + 24, y + 8.5);
+        y += 15;
       }
-      if (i < col3.length) {
-        doc.text(`• ${col3[i]}`, 146, yPos + (i * 5));
-      }
+
+      y += 5;
+
+      // =============================================
+      // SEÇÃO 4 — ASSINATURAS
+      // =============================================
+      setFill(C.vinho);
+      doc.rect(MARGIN, y, CONTENT_W, 9, 'F');
+      setFill(C.rosa);
+      doc.rect(MARGIN, y, 3.5, 9, 'F');
+      setColor(C.branco);
+      doc.setFont('times', 'bold');
+      doc.setFontSize(10.5);
+      doc.text('4.  ASSINATURAS', MARGIN + 8, y + 6);
+      y += 13;
+
+      const dataAssinaturaCompleta = dataAssinatura.day && dataAssinatura.month
+        ? `${dataAssinatura.day.padStart(2, '0')} / ${dataAssinatura.month.padStart(2, '0')} / ${formData.data.year}`
+        : `${formData.data.day} / ${formData.data.month} / ${formData.data.year}`;
+
+      setColor(C.cinzaMedio);
+      doc.setFont('times', 'italic');
+      doc.setFontSize(9);
+      doc.text(`Salvador, ${dataAssinaturaCompleta}`, PAGE_W - MARGIN, y, { align: 'right' });
+      y += 10;
+
+      const halfW = CONTENT_W / 2 - 5;
+
+      roundedRect(MARGIN, y, halfW, 30, C.fundoSec, C.cinzaClaro);
+      hr(y + 17, MARGIN + 7, MARGIN + halfW - 7, C.vinho, 0.7);
+      setColor(C.cinzaMedio);
+      doc.setFont('times', 'bold');
+      doc.setFontSize(7.5);
+      doc.text('ASSINATURA DO SOLICITANTE', MARGIN + halfW / 2, y + 21.5, { align: 'center' });
+      setColor(C.cinzaEscuro);
+      doc.setFont('times', 'italic');
+      doc.setFontSize(9);
+      doc.text(formData.solicitante.nome || '________________________', MARGIN + halfW / 2, y + 27, { align: 'center' });
+
+      const rx = MARGIN + halfW + 10;
+      roundedRect(rx, y, halfW, 30, C.fundoSec, C.cinzaClaro);
+      hr(y + 17, rx + 7, rx + halfW - 7, C.vinho, 0.7);
+      setColor(C.cinzaMedio);
+      doc.setFont('times', 'bold');
+      doc.setFontSize(7.5);
+      doc.text('ASSINATURA DO RESPONSÁVEL', rx + halfW / 2, y + 21.5, { align: 'center' });
+      setColor(C.cinzaEscuro);
+      doc.setFont('times', 'italic');
+      doc.setFontSize(9);
+      doc.text(formData.responsavel.nome || '________________________', rx + halfW / 2, y + 27, { align: 'center' });
+
+      // =============================================
+      // RODAPÉ
+      // =============================================
+      const footerY = PAGE_H - 16;
+
+      setFill(C.vinhoEscuro);
+      doc.rect(0, footerY - 2, PAGE_W, 18, 'F');
+      setFill(C.dourado);
+      doc.rect(0, footerY - 2, PAGE_W, 1.2, 'F');
+
+      setColor([225, 210, 220]);
+      doc.setFont('times', 'italic');
+      doc.setFontSize(8);
+      doc.text('Mineral & Mineração  —  Consultoria Especializada em Mineração e Meio Ambiente', PAGE_W / 2, footerY + 3.5, { align: 'center' });
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      setColor([210, 195, 205]);
+      doc.text('contatomineralemineracao@gmail.com  |  (71) 99254-3427', PAGE_W / 2, footerY + 8.5, { align: 'center' });
+
+      setColor([160, 140, 155]);
+      doc.setFontSize(6.5);
+      doc.text(`Documento gerado em ${new Date().toLocaleString('pt-BR')}`, PAGE_W / 2, footerY + 13.5, { align: 'center' });
+
+      // Salvar o PDF
+      doc.save(`solicitacao_${formData.solicitante.nome || 'cliente'}_${Date.now()}.pdf`);
+      
+    } catch (error) {
+      console.error('Erro ao gerar PDF:', error);
+      alert('Erro ao gerar PDF. Tente novamente.');
+    } finally {
+      setEnviando(false);
     }
-    
-    yPos += (maxLinhas * 5) + 10;
-    
-    // Outros
-    if (formData.outros) {
-      doc.setFont('helvetica', 'bold');
-      doc.text('Outros:', 14, yPos);
-      doc.setFont('helvetica', 'normal');
-      doc.text(formData.outros, 40, yPos);
-      yPos += 10;
-    }
-    
-    yPos += 10;
-    
-    // Local e data
-    const dataAssinaturaCompleta = dataAssinatura.day && dataAssinatura.month 
-      ? `${dataAssinatura.day} / ${dataAssinatura.month} / ${formData.data.year}`
-      : `${formData.data.day} / ${formData.data.month} / ${formData.data.year}`;
-    
-    doc.setFont('helvetica', 'bold');
-    doc.text(`Salvador, ${dataAssinaturaCompleta}`, 140, yPos);
-    yPos += 15;
-    
-    // Assinaturas
-    doc.line(30, yPos, 80, yPos);
-    doc.line(120, yPos, 170, yPos);
-    yPos += 5;
-    
-    doc.setFontSize(9);
-    doc.text(formData.solicitante.nome || 'Solicitante', 30, yPos, { align: 'left' });
-    doc.text(formData.responsavel.nome || 'Responsável', 120, yPos, { align: 'left' });
-    
-    // Salvar PDF
-    doc.save(`solicitacao_${formData.solicitante.nome || 'cliente'}_${Date.now()}.pdf`);
   };
 
   return (
@@ -305,6 +529,7 @@ const SolicitacaoServico = () => {
             <h1>FICHA DE SOLICITAÇÃO</h1>
           </div>
 
+          {/* DADOS DO RESPONSÁVEL - AGORA FIXOS */}
           <div className="solicitacao-section">
             <h2>DADOS DO RESPONSÁVEL / SERVIÇOS</h2>
             
@@ -343,8 +568,9 @@ const SolicitacaoServico = () => {
                 <input 
                   type="text" 
                   value={formData.responsavel.nome}
-                  onChange={(e) => handleResponsavelChange('nome', e.target.value)}
-                  placeholder="Digite o nome do responsável"
+                  readOnly
+                  disabled
+                  className="campo-fixo"
                 />
               </div>
               <div className="campo">
@@ -352,8 +578,9 @@ const SolicitacaoServico = () => {
                 <input 
                   type="text" 
                   value={formData.responsavel.cargo}
-                  onChange={(e) => handleResponsavelChange('cargo', e.target.value)}
-                  placeholder="Digite o cargo"
+                  readOnly
+                  disabled
+                  className="campo-fixo"
                 />
               </div>
               <div className="campo">
@@ -361,8 +588,9 @@ const SolicitacaoServico = () => {
                 <input 
                   type="email" 
                   value={formData.responsavel.email}
-                  onChange={(e) => handleResponsavelChange('email', e.target.value)}
-                  placeholder="email@exemplo.com"
+                  readOnly
+                  disabled
+                  className="campo-fixo"
                 />
               </div>
               <div className="campo">
@@ -370,8 +598,9 @@ const SolicitacaoServico = () => {
                 <input 
                   type="text" 
                   value={formData.responsavel.telefone}
-                  onChange={(e) => handleResponsavelChange('telefone', e.target.value)}
-                  placeholder="(71) 99999-9999"
+                  readOnly
+                  disabled
+                  className="campo-fixo"
                 />
               </div>
               <div className="campo">
@@ -379,13 +608,15 @@ const SolicitacaoServico = () => {
                 <input 
                   type="text" 
                   value={formData.responsavel.empresa}
-                  onChange={(e) => handleResponsavelChange('empresa', e.target.value)}
-                  placeholder="Nome da empresa"
+                  readOnly
+                  disabled
+                  className="campo-fixo"
                 />
               </div>
             </div>
           </div>
 
+          {/* DADOS DO SOLICITANTE */}
           <div className="solicitacao-section">
             <h2>DADOS DO SOLICITANTE / EMPRESA</h2>
             <div className="solicitacao-campos">
@@ -455,6 +686,7 @@ const SolicitacaoServico = () => {
             </div>
           </div>
 
+          {/* SERVIÇOS */}
           <div className="solicitacao-section">
             <h2>SERVIÇOS</h2>
             <div className="servicos-grid">
@@ -482,6 +714,7 @@ const SolicitacaoServico = () => {
             </div>
           </div>
 
+          {/* ASSINATURAS */}
           <div className="solicitacao-assinaturas">
             <div className="data-local">
               <label>Salvador,</label>
@@ -516,12 +749,25 @@ const SolicitacaoServico = () => {
             </div>
           </div>
 
+          {/* Botões de ação */}
           <div className="solicitacao-actions">
-            <button className="btn-voltar" onClick={() => navigate(-1)}>
+            <button className="btn-voltar" onClick={() => navigate(-1)} disabled={enviando}>
               <i className="fas fa-arrow-left"></i> Voltar
             </button>
-            <button className="btn-download" onClick={gerarPDF}>
-              <i className="fas fa-download"></i> Baixar PDF
+            <button 
+              className="btn-download" 
+              onClick={gerarPDF}
+              disabled={enviando}
+            >
+              {enviando ? (
+                <>
+                  <i className="fas fa-spinner fa-spin"></i> Gerando PDF...
+                </>
+              ) : (
+                <>
+                  <i className="fas fa-download"></i> Baixar PDF
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -529,6 +775,8 @@ const SolicitacaoServico = () => {
 
       <Footer />
       <ScrollTop />
+
+     
     </>
   );
 };
