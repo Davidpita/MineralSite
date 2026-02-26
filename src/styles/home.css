@@ -2220,3 +2220,1155 @@
     padding: 100px 120px;
   }
 }
+
+
+/* Ajustes específicos para iPhone 12 e tamanhos similares (390px) */
+/* Ajustes específicos para iPhone 12 e tamanhos similares (390px) */
+@media (max-width: 400px) {
+  /* ===== HERO SECTION ===== */
+  .hero {
+    min-height: 500px;
+  }
+  
+  .hero-content {
+    transform: translateY(-10px);
+    padding: 20px 0 40px;
+    text-align: left;
+  }
+  
+  .hero-tag {
+    font-size: 10px;
+    padding: 5px 12px;
+    margin-bottom: 15px;
+    letter-spacing: 1.5px;
+    display: inline-block;
+    width: auto;
+  }
+  
+  .hero h1 {
+    font-size: 36px;
+    line-height: 1.2;
+    margin-bottom: 15px;
+    max-width: 100%;
+  }
+  
+  .hero h1 br {
+    display: none;
+  }
+  
+  .hero p {
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 100%;
+    margin-bottom: 25px;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  /* CORREÇÃO DOS BOTÕES */
+  .hero-btns {
+    display: flex;
+    flex-direction: row; /* Mantém um ao lado do outro */
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+    justify-content: flex-start; /* Alinhado à esquerda */
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    width: auto; /* Não ocupa largura total */
+    min-width: 140px; /* Largura mínima */
+    padding: 12px 20px;
+    font-size: 14px;
+    justify-content: center;
+    text-align: center;
+    flex: 0 1 auto; /* Não expande */
+  }
+  
+  .btn-primary i,
+  .btn-outline i {
+    margin-left: 6px;
+    font-size: 12px;
+  }
+}
+
+/* Ajuste específico para iPhone 12 (390px) */
+@media (width: 390px) {
+  .hero-btns {
+    gap: 8px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 130px;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+}
+
+/* Ajuste para telas muito pequenas (quando não couber um ao lado do outro) */
+@media (max-width: 360px) {
+  .hero-btns {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .btn-primary,
+  ⁠.btn-outline {
+    width: 100%;
+    min-width: 100%;
+  }
+}
+
+/* Ajustes específicos para iPhone 12 na seção About */
+@media (max-width: 400px) {
+  /* ===== ABOUT SECTION ===== */
+  .about {
+    padding: 0;
+  }
+  
+  .about-head {
+    padding: 50px 0 0;
+  }
+  
+  .about-head .sec-hdr {
+    margin-bottom: 30px;
+  }
+  
+  .about-head .badge {
+    font-size: 10px;
+    margin-bottom: 8px;
+  }
+  
+  .about-head .sec-title {
+    font-size: 28px;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  
+  .about-head .sec-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 0 10px;
+  }
+  
+  /* Zigzag rows */
+  .zz-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  
+  .zz-img {
+    min-height: 250px;
+    height: 250px;
+  }
+  
+  .zz-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .zz-txt {
+    padding: 35px 25px;
+  }
+  
+  .zz-txt .badge {
+    font-size: 10px;
+    margin-bottom: 8px;
+  }
+  
+  .zz-txt .sec-title {
+    font-size: 24px;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  
+  .zz-txt .divider {
+    width: 36px;
+    margin: 8px 0 16px;
+  }
+  
+  .zz-txt p {
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  
+  /* Valores grid */
+  .vals {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 20px;
+  }
+  
+  .val {
+    padding: 12px 6px;
+    border-radius: 6px;
+  }
+  
+  .val i {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+  
+  .val h4 {
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  
+  /* Ajuste para a primeira row (imagem primeiro, texto depois) */
+  .zz-row:first-of-type .zz-img {
+    order: 1;
+  }
+  
+  .zz-row:first-of-type .zz-txt {
+    order: 2;
+  }
+  
+  /* Ajuste para a segunda row (texto primeiro, imagem depois - mantém a ordem) */
+  .zz-row:nth-child(even) .zz-img {
+    order: 1;
+  }
+  
+  .zz-row:nth-child(even) .zz-txt {
+    order: 2;
+  }
+}
+
+/* Ajustes específicos para iPhone 12 (390px) */
+@media (width: 390px) {
+  .zz-img {
+    min-height: 230px;
+    height: 230px;
+  }
+  
+  .zz-txt {
+    padding: 30px 20px;
+  }
+  
+  .zz-txt .sec-title {
+    font-size: 22px;
+  }
+  
+  .zz-txt p {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  
+  .vals {
+    gap: 6px;
+  }
+  
+  .val {
+    padding: 10px 4px;
+  }
+  
+  .val i {
+    font-size: 16px;
+  }
+  
+  .val h4 {
+    font-size: 9px;
+  }
+}
+
+/* Ajustes para iPhone 12 Pro Max (428px) */
+@media (min-width: 401px) and (max-width: 430px) {
+  .zz-img {
+    min-height: 280px;
+  }
+  
+  .zz-txt {
+    padding: 40px 30px;
+  }
+  
+  .zz-txt .sec-title {
+    font-size: 26px;
+  }
+  
+  .zz-txt p {
+    font-size: 14px;
+  }
+}
+
+/* Ajustes para iPhone SE e telas menores (320px - 375px) */
+@media (max-width: 375px) {
+  .about-head .sec-title {
+    font-size: 24px;
+  }
+  
+  .about-head .sec-desc {
+    font-size: 13px;
+  }
+  
+  .zz-img {
+    min-height: 200px;
+    height: 200px;
+  }
+  
+  .zz-txt {
+    padding: 25px 15px;
+  }
+  
+  .zz-txt .sec-title {
+    font-size: 20px;
+  }
+  
+  .zz-txt p {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  
+  .vals {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+  }
+  
+  .val {
+    padding: 8px 3px;
+  }
+  
+  .val i {
+    font-size: 14px;
+  }
+  
+  .val h4 {
+    font-size: 8px;
+  }
+}
+
+/* Melhorias de toque para mobile */
+@media (max-width: 430px) {
+  .val {
+    -webkit-tap-highlight-color: rgba(122, 30, 66, 0.1);
+    transition: background 0.2s ease;
+  }
+  
+  .val:active {
+    background: var(--blush);
+    transform: scale(0.98);
+  }
+  
+  .btn-primary:active,
+  .btn-outline:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Ajuste para garantir que as imagens não fiquem distorcidas */
+@media (max-width: 430px) {
+  .zz-img {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .zz-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  
+  .zz-img::after {
+    background: linear-gradient(to top, rgba(122, 30, 66, 0.2), transparent 50%);
+  }
+}
+
+
+
+/* ===== AJUSTES PARA IPHONE XR E DIMENSÕES SIMILARES ===== */
+
+/* iPhone XR (414px) e iPhone 11 (414px) */
+@media (width: 414px) {
+  /* Hero Section */
+  .hero {
+    min-height: 520px;
+  }
+  
+  .hero-content {
+    padding: 25px 0 45px;
+  }
+  
+  .hero h1 {
+    font-size: 40px;
+  }
+  
+  .hero p {
+    font-size: 16px;
+    max-width: 350px;
+  }
+  
+  .hero-btns {
+    gap: 12px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 150px;
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+  
+  /* About Section */
+  .zz-img {
+    min-height: 280px;
+  }
+  
+  .zz-txt {
+    padding: 40px 30px;
+  }
+  
+  .zz-txt .sec-title {
+    font-size: 28px;
+  }
+  
+  .zz-txt p {
+    font-size: 15px;
+  }
+  
+  .vals {
+    gap: 10px;
+  }
+  
+  .val {
+    padding: 14px 8px;
+  }
+  
+  .val i {
+    font-size: 20px;
+  }
+  
+  .val h4 {
+    font-size: 11px;
+  }
+}
+
+/* iPhone 12/13/14 (390px) - já existente, apenas refinando */
+@media (width: 390px) {
+  .hero h1 {
+    font-size: 36px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 140px;
+    padding: 11px 16px;
+  }
+}
+
+/* iPhone SE (375px) e similares */
+@media (width: 375px) {
+  .hero {
+    min-height: 480px;
+  }
+  
+  .hero h1 {
+    font-size: 34px;
+  }
+  
+  .hero p {
+    font-size: 15px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 130px;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  
+  .zz-img {
+    min-height: 240px;
+  }
+  
+  .zz-txt {
+    padding: 30px 20px;
+  }
+  
+  .zz-txt .sec-title {
+    font-size: 24px;
+  }
+  
+  .zz-txt p {
+    font-size: 14px;
+  }
+  
+  .vals {
+    gap: 8px;
+  }
+  
+  .val {
+    padding: 12px 6px;
+  }
+  
+  .val i {
+    font-size: 18px;
+  }
+  
+  .val h4 {
+    font-size: 10px;
+  }
+}
+
+/* iPhone 12 Pro Max / 13 Pro Max / 14 Plus (428px) */
+@media (width: 428px) {
+  .hero {
+    min-height: 540px;
+  }
+  
+  .hero h1 {
+    font-size: 42px;
+  }
+  
+  .hero p {
+    font-size: 17px;
+    max-width: 380px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 160px;
+    padding: 13px 20px;
+    font-size: 15px;
+  }
+  
+  .zz-img {
+    min-height: 300px;
+  }
+  
+  .zz-txt {
+    padding: 45px 35px;
+  }
+  
+  .zz-txt .sec-title {
+    font-size: 30px;
+  }
+}
+
+/* Samsung Galaxy S20/S21 (360px) e similares */
+@media (width: 360px) {
+  .hero {
+    min-height: 460px;
+  }
+  
+  .hero h1 {
+    font-size: 32px;
+  }
+  
+  .hero p {
+    font-size: 14px;
+  }
+  
+  .hero-btns {
+    gap: 8px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 120px;
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  
+  .zz-img {
+    min-height: 220px;
+  }
+  
+  .zz-txt {
+    padding: 25px 18px;
+  }
+  
+  .zz-txt .sec-title {
+    font-size: 22px;
+  }
+  
+  .vals {
+    gap: 6px;
+  }
+  
+  .val {
+    padding: 10px 4px;
+  }
+  
+  .val i {
+    font-size: 16px;
+  }
+  
+  .val h4 {
+    font-size: 9px;
+  }
+}
+
+/* Google Pixel 5 (393px) */
+@media (width: 393px) {
+  .hero h1 {
+    font-size: 37px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 145px;
+  }
+}
+
+/* Samsung Galaxy Note 20 (412px) */
+@media (width: 412px) {
+  .hero h1 {
+    font-size: 39px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 155px;
+  }
+}
+
+/* ===== MEDIA QUERIES GENÉRICAS PARA FAIXAS ===== */
+
+/* Dispositivos médios (400px - 430px) */
+@media (min-width: 400px) and (max-width: 430px) {
+  .hero {
+    min-height: 500px;
+  }
+  
+  .hero h1 {
+    font-size: 38px;
+  }
+  
+  .hero p {
+    font-size: 15px;
+  }
+  
+  .hero-btns {
+    gap: 12px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 145px;
+    padding: 11px 17px;
+    font-size: 13.5px;
+  }
+  
+  .zz-img {
+    min-height: 260px;
+  }
+  
+  .zz-txt {
+    padding: 35px 28px;
+  }
+  
+  .zz-txt .sec-title {
+    font-size: 26px;
+  }
+}
+
+/* Dispositivos pequenos (350px - 399px) */
+@media (min-width: 350px) and (max-width: 399px) {
+  .hero h1 {
+    font-size: 34px;
+  }
+  
+  .hero p {
+    font-size: 14px;
+  }
+  
+  .hero-btns {
+    gap: 10px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 135px;
+    padding: 10px 15px;
+    font-size: 13px;
+  }
+  
+  .zz-img {
+    min-height: 240px;
+  }
+  
+  .zz-txt {
+    padding: 30px 22px;
+  }
+  
+  .zz-txt .sec-title {
+    font-size: 24px;
+  }
+}
+
+/* Dispositivos muito pequenos (320px - 349px) */
+@media (min-width: 320px) and (max-width: 349px) {
+  .hero {
+    min-height: 440px;
+  }
+  
+  .hero h1 {
+    font-size: 30px;
+  }
+  
+  .hero p {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  
+  .hero-btns {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    width: 100%;
+    min-width: 100%;
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  
+  .hero-tag {
+    font-size: 9px;
+    padding: 4px 10px;
+  }
+  
+  .zz-img {
+    min-height: 200px;
+  }
+  
+  .zz-txt {
+    padding: 25px 15px;
+  }
+  
+  .zz-txt .sec-title {
+    font-size: 22px;
+  }
+  
+  .zz-txt p {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  
+  .vals {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+  }
+  
+  .val {
+    padding: 8px 3px;
+  }
+  
+  .val i {
+    font-size: 14px;
+    margin-bottom: 3px;
+  }
+  
+  .val h4 {
+    font-size: 8px;
+  }
+}
+
+
+/* ===== AJUSTES PARA SAMSUNG GALAXY S20 ULTRA E DIMENSÕES SIMILARES ===== */
+
+/* Samsung Galaxy S20 Ultra (384px) - Modo padrão */
+@media (width: 384px) {
+  /* Hero Section */
+  .hero {
+    min-height: 500px;
+  }
+  
+  .hero-content {
+    padding: 22px 0 42px;
+  }
+  
+  .hero h1 {
+    font-size: 36px;
+    line-height: 1.2;
+  }
+  
+  .hero p {
+    font-size: 15px;
+    max-width: 340px;
+    margin-bottom: 25px;
+  }
+  
+  .hero-btns {
+    gap: 10px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 142px;
+    padding: 11px 16px;
+    font-size: 13.5px;
+  }
+  
+  /* About Section */
+  .zz-img {
+    min-height: 260px;
+  }
+  
+  .zz-txt {
+    padding: 35px 25px;
+  }
+  
+  .zz-txt .sec-title {
+    font-size: 26px;
+    margin-bottom: 12px;
+  }
+  
+  .zz-txt p {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  
+  .vals {
+    gap: 8px;
+    margin-top: 18px;
+  }
+  
+  .val {
+    padding: 12px 6px;
+  }
+  
+  .val i {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+  
+  .val h4 {
+    font-size: 10px;
+    letter-spacing: 0.3px;
+  }
+}
+
+/* Samsung Galaxy S20 Ultra (412px) - Modo de alta densidade */
+@media (width: 412px) {
+  /* Hero Section */
+  .hero {
+    min-height: 520px;
+  }
+  
+  .hero-content {
+    padding: 24px 0 44px;
+  }
+  
+  .hero h1 {
+    font-size: 39px;
+  }
+  
+  .hero p {
+    font-size: 16px;
+    max-width: 360px;
+  }
+  
+  .hero-btns {
+    gap: 12px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 150px;
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+  
+  /* About Section */
+  .zz-img {
+    min-height: 280px;
+  }
+  
+  .zz-txt {
+    padding: 40px 30px;
+  }
+  
+  .zz-txt .sec-title {
+    font-size: 28px;
+  }
+  
+  .zz-txt p {
+    font-size: 15px;
+  }
+  
+  .vals {
+    gap: 10px;
+  }
+  
+  .val {
+    padding: 14px 8px;
+  }
+  
+  .val i {
+    font-size: 20px;
+  }
+  
+  .val h4 {
+    font-size: 11px;
+  }
+}
+
+/* Samsung Galaxy S20/S21 (360px) */
+@media (width: 360px) {
+  .hero {
+    min-height: 480px;
+  }
+  
+  .hero h1 {
+    font-size: 33px;
+  }
+  
+  .hero p {
+    font-size: 14px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 130px;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  
+  .zz-img {
+    min-height: 240px;
+  }
+  
+  .zz-txt {
+    padding: 30px 20px;
+  }
+  
+  .zz-txt .sec-title {
+    font-size: 24px;
+  }
+}
+
+/* Samsung Galaxy Note 20 (393px) */
+@media (width: 393px) {
+  .hero h1 {
+    font-size: 35px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 138px;
+  }
+  
+  .zz-txt {
+    padding: 32px 22px;
+  }
+}
+
+/* Samsung Galaxy Z Fold (280px) - Caso especial */
+@media (width: 280px) {
+  .hero {
+    min-height: 400px;
+  }
+  
+  .hero h1 {
+    font-size: 26px;
+  }
+  
+  .hero p {
+    font-size: 12px;
+  }
+  
+  .hero-btns {
+    flex-direction: column;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    width: 100%;
+    min-width: 100%;
+    padding: 10px;
+    font-size: 12px;
+  }
+  
+  .zz-img {
+    min-height: 180px;
+  }
+  
+  .zz-txt {
+    padding: 20px 12px;
+  }
+  
+  .zz-txt .sec-title {
+    font-size: 20px;
+  }
+  
+  .vals {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+  }
+  
+  .val {
+    padding: 8px 4px;
+  }
+  
+  .val i {
+    font-size: 14px;
+  }
+  
+  .val h4 {
+    font-size: 8px;
+  }
+}
+
+/* ===== FAIXAS INTERMEDIÁRIAS PARA SAMSUNG ===== */
+
+/* Faixa 380px - 389px (inclui S20 Ultra 384px) */
+@media (min-width: 380px) and (max-width: 389px) {
+  .hero h1 {
+    font-size: 35px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 140px;
+    padding: 11px 15px;
+  }
+  
+  .zz-txt {
+    padding: 33px 24px;
+  }
+  
+  .zz-txt .sec-title {
+    font-size: 25px;
+  }
+}
+
+/* Faixa 390px - 399px */
+@media (min-width: 390px) and (max-width: 399px) {
+  .hero h1 {
+    font-size: 36px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 145px;
+  }
+}
+
+/* Faixa 400px - 409px */
+@media (min-width: 400px) and (max-width: 409px) {
+  .hero h1 {
+    font-size: 37px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 148px;
+    padding: 11px 17px;
+  }
+}
+
+/* Faixa 410px - 419px (inclui S20 Ultra 412px) */
+@media (min-width: 410px) and (max-width: 419px) {
+  .hero h1 {
+    font-size: 38px;
+  }
+  
+  .hero p {
+    font-size: 15.5px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 152px;
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+  
+  .zz-img {
+    min-height: 270px;
+  }
+  
+  .zz-txt {
+    padding: 38px 28px;
+  }
+  
+  .zz-txt .sec-title {
+    font-size: 27px;
+  }
+}
+
+/* Faixa 420px - 430px */
+@media (min-width: 420px) and (max-width: 430px) {
+  .hero h1 {
+    font-size: 40px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 155px;
+    padding: 12px 20px;
+    font-size: 14.5px;
+  }
+  
+  .zz-img {
+    min-height: 290px;
+  }
+  
+  .zz-txt {
+    padding: 42px 32px;
+  }
+}
+
+/* ===== AJUSTES GERAIS PARA DISPOSITIVOS SAMSUNG ===== */
+
+/* Ajustes de toque específicos para Samsung */
+@media (hover: none) and (pointer: coarse) {
+  /* Aumenta área de toque dos botões em dispositivos Samsung */
+  .btn-primary,
+  .btn-outline,
+  .nav-menu a,
+  .val {
+    min-height: 44px; /* Altura mínima recomendada para toque */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Feedback tátil visual */
+  .btn-primary:active,
+  .btn-outline:active,
+  .val:active {
+    transform: scale(0.97);
+    transition: transform 0.1s ease;
+  }
+}
+
+/* Ajuste para a barra de navegação em dispositivos Samsung */
+@media (max-width: 412px) {
+  .navbar {
+    padding: 12px 0;
+  }
+  
+  .logo img {
+    width: 42px;
+  }
+  
+  .logo span {
+    font-size: 18px;
+  }
+  
+  .hamburger {
+    width: 28px;
+    height: 20px;
+  }
+  
+  .hamburger-line {
+    height: 2.5px;
+  }
+}
+
+/* Ajustes específicos para a densidade de pixels da Samsung */
+@media (-webkit-min-device-pixel-ratio: 4), (min-resolution: 384dpi) {
+  /* Para telas de alta densidade como S20 Ultra */
+  .hero-bg,
+  .zz-img img,
+  .env-img img {
+    image-rendering: crisp-edges;
+  }
+}
