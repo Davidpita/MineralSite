@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import TopBar from '../components/TopBar';
 import Navbar from '../components/Navbar';
@@ -8,7 +8,38 @@ import ScrollTop from '../components/ScrollTop';
 
 const Servicos = () => {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+
+    // Refs para cada grid de serviços
+  const gridRefs = {
+    mineral: useRef(null),
+    mineracao: useRef(null),
+    geotecnia: useRef(null),
+    licenciamento: useRef(null),
+    imobiliarios: useRef(null)
+  };
+
+  // Função para rolar para esquerda
+  const scrollLeft = (gridId) => {
+    if (gridRefs[gridId]?.current) {
+      gridRefs[gridId].current.scrollBy({
+        left: -300,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Função para rolar para direita
+  const scrollRight = (gridId) => {
+    if (gridRefs[gridId]?.current) {
+      gridRefs[gridId].current.scrollBy({
+        left: 300,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+
   // Dados organizados por categoria
   const categorias = [
     {
@@ -211,7 +242,7 @@ const Servicos = () => {
     }
   ];
 
-  return (
+   return (
     <>
       <TopBar />
       <Navbar />
@@ -248,11 +279,32 @@ const Servicos = () => {
           {/* Lista de categorias com serviços */}
           {categorias.map((categoria) => (
             <div key={categoria.id} id={categoria.id} className="categoria-section">
-              <h2 className="categoria-titulo">
-                {categoria.titulo}
-              </h2>
+              <div className="categoria-header">
+                <h2 className="categoria-titulo">{categoria.titulo}</h2>
+                
+                {/* Setas de navegação */}
+                <div className="setas-navegacao">
+                  <button 
+                    className="seta-btn seta-esquerda"
+                    onClick={() => scrollLeft(categoria.id)}
+                    aria-label="Rolar para esquerda"
+                  >
+                    <i className="fas fa-chevron-left"></i>
+                  </button>
+                  <button 
+                    className="seta-btn seta-direita"
+                    onClick={() => scrollRight(categoria.id)}
+                    aria-label="Rolar para direita"
+                  >
+                    <i className="fas fa-chevron-right"></i>
+                  </button>
+                </div>
+              </div>
               
-              <div className="servicos-grid">
+              <div 
+                className="servicos-grid" 
+                ref={gridRefs[categoria.id]}
+              >
                 {categoria.servicos.map((servico) => (
                   <div key={servico.id} className="servico-card">
                     <div className="servico-img">
@@ -267,10 +319,10 @@ const Servicos = () => {
                       <button 
                         className="servico-btn"
                         onClick={() => navigate('/solicitacao', { state: { servicoTitulo: servico.titulo } })}
-                        >
+                      >
                         Solicitar Serviço
                         <i className="fas fa-paper-plane"></i>
-                        </button>
+                      </button>
                     </div>
                   </div>
                 ))}
