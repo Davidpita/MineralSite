@@ -111,24 +111,79 @@ const mineracaoData = {
 const Mineral = () => {
   const [cardDestaque, setCardDestaque] = useState(null);
   const [cardsPequenos, setCardsPequenos] = useState([]);
+  const [cardsGrid, setCardsGrid] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [animacaoIndex, setAnimacaoIndex] = useState(null);
+  
+  // Estados para autoplay
+  const [autoPlay, setAutoPlay] = useState(true);
+  const [intervalTime] = useState(10000); // 10 segundos entre cada troca
 
   useEffect(() => {
     inicializarCards();
-    window.scrollTo(0, 0);
   }, []);
 
+  // Efeito para autoplay
+  useEffect(() => {
+    let interval;
+    
+    if (autoPlay && !loading && cardDestaque && cardsPequenos.length > 0) {
+      interval = setInterval(() => {
+        avancarCard();
+      }, intervalTime);
+    }
+    
+    return () => clearInterval(interval);
+  }, [autoPlay, loading, cardDestaque, cardsPequenos]);
+
   const inicializarCards = () => {
-    // Pega o primeiro card como destaque (Cessão de Direitos)
     const primeiroCard = mineracaoData.cards[0];
-    // Pega os próximos 4 cards como cards pequenos
     const outrosCards = mineracaoData.cards.slice(1, 5);
+    const cardsRestantes = mineracaoData.cards.slice(5);
     
     setCardDestaque(primeiroCard);
     setCardsPequenos(outrosCards);
+    setCardsGrid(cardsRestantes);
   };
 
-  const trocarCards = (cardId) => {
+  // Função para avançar automaticamente (próximo card)
+  const avancarCard = () => {
+    if (!cardDestaque || cardsPequenos.length === 0) return;
+    
+    setLoading(true);
+    setAnimacaoIndex(0);
+    
+    const proximoCard = cardsPequenos[0];
+    const novoCardsPequenos = [...cardsPequenos.slice(1), cardDestaque];
+    
+    setTimeout(() => {
+      setCardDestaque(proximoCard);
+      setCardsPequenos(novoCardsPequenos);
+      setAnimacaoIndex(null);
+      setLoading(false);
+    }, 300);
+  };
+
+  // Função para voltar (card anterior)
+  const voltarCard = () => {
+    if (!cardDestaque || cardsPequenos.length === 0) return;
+    
+    setLoading(true);
+    setAnimacaoIndex(cardsPequenos.length - 1);
+    
+    const ultimoCardPequeno = cardsPequenos[cardsPequenos.length - 1];
+    const novoCardsPequenos = [cardDestaque, ...cardsPequenos.slice(0, -1)];
+    
+    setTimeout(() => {
+      setCardDestaque(ultimoCardPequeno);
+      setCardsPequenos(novoCardsPequenos);
+      setAnimacaoIndex(null);
+      setLoading(false);
+    }, 300);
+  };
+
+  // Função para ir para um card específico
+  const irParaCard = (cardId) => {
     setLoading(true);
     
     const cardIndex = cardsPequenos.findIndex(card => card.id === cardId);
@@ -138,46 +193,53 @@ const Mineral = () => {
       return;
     }
 
+    setAnimacaoIndex(cardIndex);
+    
     const cardSelecionado = cardsPequenos[cardIndex];
     const cardDestaqueAtual = cardDestaque;
-
-    setCardDestaque(cardSelecionado);
-    setCardsPequenos(prevCards => {
-      const newCards = [...prevCards];
-      newCards[cardIndex] = cardDestaqueAtual;
-      return newCards;
+    
+    const novosCardsPequenos = cardsPequenos.map((card, idx) => {
+      if (idx === cardIndex) return cardDestaqueAtual;
+      return card;
     });
 
     setTimeout(() => {
-      scrollToCard();
+      setCardDestaque(cardSelecionado);
+      setCardsPequenos(novosCardsPequenos);
+      setAnimacaoIndex(null);
       setLoading(false);
-    }, 200);
+    }, 300);
   };
 
-  const scrollToCard = () => {
-    setTimeout(() => {
-      const cardDestaqueElement = document.getElementById('card-destaque');
-      if (cardDestaqueElement) {
-        const rect = cardDestaqueElement.getBoundingClientRect();
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const offset = 100;
-        const targetPosition = rect.top + scrollTop - offset;
-        
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        });
-        
-        cardDestaqueElement.style.transition = 'box-shadow 0.3s ease';
-        cardDestaqueElement.style.boxShadow = '0 0 0 4px #b85070';
-        setTimeout(() => {
-          if (cardDestaqueElement) {
-            cardDestaqueElement.style.boxShadow = '0 20px 60px rgba(0,0,0,0.4)';
-          }
-        }, 1000);
-      }
-    }, 200);
+  // Handlers para hover
+  const handleMouseEnter = () => {
+    setAutoPlay(false);
   };
+
+  const handleMouseLeave = () => {
+    setAutoPlay(true);
+  };
+
+  // Efeito visual no card destaque (sem scroll)
+  const destacarCard = () => {
+    const cardDestaqueElement = document.getElementById('card-destaque');
+    if (cardDestaqueElement) {
+      cardDestaqueElement.style.transition = 'box-shadow 0.3s ease';
+      cardDestaqueElement.style.boxShadow = '0 0 0 4px #b85070';
+      setTimeout(() => {
+        if (cardDestaqueElement) {
+          cardDestaqueElement.style.boxShadow = '0 20px 60px rgba(0,0,0,0.4)';
+        }
+      }, 1000);
+    }
+  };
+
+  // Chamar efeito visual quando o card muda
+  useEffect(() => {
+    if (cardDestaque) {
+      destacarCard();
+    }
+  }, [cardDestaque]);
 
   return (
     <>
@@ -209,11 +271,36 @@ const Mineral = () => {
             </p>
           </div>
 
-          {/* Card Destaque */}
+          {/* Controles de navegação circular */}
+          <div className="mineral-navegacao">
+            <button 
+              className="nav-btn nav-prev" 
+              onClick={voltarCard}
+              disabled={loading}
+              aria-label="Card anterior"
+            >
+              <i className="fas fa-chevron-left"></i>
+            </button>
+            <span className="nav-indicador">
+              {cardDestaque && `${cardsPequenos.findIndex(c => c.id === cardDestaque.id) + 1 || 1} / ${cardsPequenos.length + 1}`}
+            </span>
+            <button 
+              className="nav-btn nav-next" 
+              onClick={avancarCard}
+              disabled={loading}
+              aria-label="Próximo card"
+            >
+              <i className="fas fa-chevron-right"></i>
+            </button>
+          </div>
+
+          {/* Card Destaque com hover para pausar autoplay */}
           {cardDestaque && (
             <div 
               id="card-destaque" 
-              className="mineral-feature"
+              className={`mineral-feature ${loading ? 'loading' : ''}`}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
               <div className="mineral-feature-img">
                 <img 
@@ -235,54 +322,62 @@ const Mineral = () => {
             </div>
           )}
 
-          {/* Cards Pequenos */}
-          <div className="mineral-cards">
-            {cardsPequenos.map((card, index) => (
-              <div 
-                key={card.id}
-                className={`mineral-card ${loading ? 'loading' : ''}`}
-                style={{ animationDelay: `${index * 0.1}s` }}
-                onClick={() => trocarCards(card.id)}
-                data-clickable="true"
-              >
-                <div className="mineral-card-icon">
-                  <i className={`fas ${card.icone}`}></i>
-                </div>
-                <h4>{card.titulo}</h4>
-                <p className="mineral-card-descricao">
-                  {card.descricao.length > 120 
-                    ? `${card.descricao.substring(0, 120)}...` 
-                    : card.descricao}
-                </p>
-                <div className="mineral-card-footer">
-                  Clique para ver detalhes →
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Cards adicionais em grid (os cards 5, 6, 7) */}
-          <div className="mineral-grid">
-            {mineracaoData.cards.slice(5).map((card) => (
-              <div key={card.id} className="mineral-grid-card">
-                <div className="mineral-grid-img">
-                  <img src={card.foto} alt={card.titulo} loading="lazy" />
-                </div>
-                <div className="mineral-grid-body">
-                  <h3>{card.titulo}</h3>
-                  <p>{card.descricao.length > 150 
-                    ? `${card.descricao.substring(0, 150)}...` 
-                    : card.descricao}
+          {/* Cards Pequenos com animação */}
+          <div className="mineral-cards-container">
+            <h3 className="mineral-subtitulo">Outros serviços</h3>
+            <div className="mineral-cards">
+              {cardsPequenos.map((card, index) => (
+                <div 
+                  key={card.id}
+                  className={`mineral-card ${loading && animacaoIndex === index ? 'animando' : ''} ${loading ? 'loading' : ''}`}
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                  onClick={() => irParaCard(card.id)}
+                  data-clickable="true"
+                >
+                  <div className="mineral-card-icon">
+                    <i className={`fas ${card.icone}`}></i>
+                  </div>
+                  <h4>{card.titulo}</h4>
+                  <p className="mineral-card-descricao">
+                    {card.descricao.length > 100 
+                      ? `${card.descricao.substring(0, 100)}...` 
+                      : card.descricao}
                   </p>
-                  <div className="mineral-grid-tags">
-                    {card.itens.slice(0, 3).map((item, i) => (
-                      <span key={i} className="mineral-grid-tag">• {item}</span>
-                    ))}
+                  <div className="mineral-card-footer">
+                    Clique para ver detalhes →
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+
+          {/* Cards adicionais em grid (estáticos) */}
+          {cardsGrid.length > 0 && (
+            <div className="mineral-grid-container">
+              <h3 className="mineral-subtitulo">Mais serviços</h3>
+              <div className="mineral-grid">
+                {cardsGrid.map((card) => (
+                  <div key={card.id} className="mineral-grid-card">
+                    <div className="mineral-grid-img">
+                      <img src={card.foto} alt={card.titulo} loading="lazy" />
+                    </div>
+                    <div className="mineral-grid-body">
+                      <h3>{card.titulo}</h3>
+                      <p>{card.descricao.length > 150 
+                        ? `${card.descricao.substring(0, 150)}...` 
+                        : card.descricao}
+                      </p>
+                      <div className="mineral-grid-tags">
+                        {card.itens.slice(0, 3).map((item, i) => (
+                          <span key={i} className="mineral-grid-tag">• {item}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

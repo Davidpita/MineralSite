@@ -97,7 +97,7 @@
 
 /* Hamburger Button */
 .hamburger {
-  display: none;
+   display: none;
   flex-direction: column;
   justify-content: space-between;
   width: 30px;
@@ -106,8 +106,16 @@
   border: none;
   cursor: pointer;
   padding: 0;
-  z-index: 1001;
+  z-index: 1002; /* Aumentado para ficar acima de tudo */
   position: relative;
+  transition: all 0.3s ease;
+}
+
+.hamburger.active {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  z-index: 1002;
 }
 
 .hamburger-line {
@@ -137,10 +145,15 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
   z-index: 998;
   animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* Menu de navegação */

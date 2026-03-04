@@ -128,9 +128,9 @@
   flex: 0 0 300px;
   min-width: 300px;
   max-width: 300px;
-  height: auto; /* ← ALTURA AUTOMÁTICA */
-  min-height: auto; /* ← REMOVE ALTURA MÍNIMA FIXA */
-  max-height: none; /* ← SEM ALTURA MÁXIMA */
+  height: auto;
+  min-height: auto; 
+  max-height: none; 
 }
 
 /* Conteúdo do card sem limite de altura */
